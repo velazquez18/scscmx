@@ -1,0 +1,187 @@
+/* Estilos para el header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #4d4d4d3b;
+}
+
+/* Sección izquierda (logo y menú hamburguesa) */
+.left-section {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Espacio entre el menú hamburguesa y el logo */
+}
+
+/* Menú hamburguesa */
+.menu-toggle {
+  display: none; /* Oculto por defecto */
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.menu-toggle span {
+  width: 25px;
+  height: 3px;
+  background-color: #686868;
+  margin: 4px 0;
+  transition: all 0.3s ease;
+}
+
+/* Logo */
+.logo img {
+  width: 100px;
+}
+
+/* Menú de navegación */
+nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 15px; /* Espacio entre elementos del menú */
+}
+
+nav ul li a {
+  font-weight: bold;
+  text-decoration: none;
+  color: #686868;
+  transition: all 0.3s ease;
+  padding: 8px 16px;
+}
+
+nav ul li .active {
+  border-bottom: 2px solid grey;
+}
+
+nav ul li a:hover {
+  background-color: rgba(0, 0, 255, 0.1);
+  color: rgb(56, 56, 56);
+  border-radius: 4px;
+  border-bottom: 2px solid grey;
+}
+
+/* Ícono de usuario */
+.user-icon {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  background-color: #ececec;
+  font-size: 20px;
+  color: #fff;
+  text-align: center;
+  line-height: 50px;
+}
+
+.user-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #5c5c5c;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* Menú desplegable */
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 50px;
+  background-color: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  z-index: 1000;
+  width: 150px;
+  font-size: 13px;
+  color: #000000a6;
+  text-align: left;
+}
+
+.dropdown-menu ul {
+  list-style-type: none;
+  padding: 10px;
+  margin: 0;
+}
+
+.dropdown-menu ul li {
+  border-bottom: 1px solid #ddd;
+  padding: 8px 0;
+}
+
+.dropdown-menu ul li:last-child {
+  border-bottom: none;
+}
+
+.dropdown-menu ul li a,
+.dropdown-menu ul li button {
+  text-decoration: none;
+  color: #000;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.dropdown-menu ul li a:hover,
+.dropdown-menu ul li button:hover {
+  background-color: #f3f3f3;
+}
+
+/* Estilos para pantallas pequeñas */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: flex; /* Mostrar en móviles */
+  }
+
+  nav {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background-color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    z-index: 1000;
+    display: none; /* Ocultar por defecto */
+  }
+
+  nav.open {
+    display: block; /* Mostrar cuando está abierto */
+  }
+
+  nav ul {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  nav ul li {
+    margin: 0;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  nav ul li:last-child {
+    border-bottom: none;
+  }
+
+  body.dark-mode nav {
+    background-color: #444;
+  }
+
+  body.dark-mode nav ul li {
+    border-bottom: 1px solid #555;
+  }
+}

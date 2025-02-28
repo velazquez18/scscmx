@@ -1,0 +1,13 @@
+/* transitions.css */
+
+/* Transición suave para el cambio de modo */
+body,
+header,
+nav ul li a,
+.user-icon,
+.dropdown-menu,
+.nav-actions button,
+.formulario span,
+.seccion-pesos span {
+    transition: all 0.4s ease-in-out;
+}

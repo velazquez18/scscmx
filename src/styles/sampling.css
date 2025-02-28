@@ -1,0 +1,336 @@
+/* Reset general */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Estilo global */
+  body {
+    font-family: Arial, sans-serif;
+    background: rgb(255, 255, 255);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  
+  /* Contenedor principal */
+  .sampling-main-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Sección del formulario */
+  .sampling-form-section {
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 20px;
+  }
+  
+  .sampling-qr-section input {
+    font-size: 14px;
+    padding: 6px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+  }
+  
+  .sampling-qr-section label {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  
+  /* Sección del formulario con imagen (dos columnas) */
+  .sampling-form-section.input-image-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* 2fr para los inputs/labels, 1fr para la imagen */
+    gap: 30px;
+    align-items: flex-start;
+    width: 100%;
+  }
+  
+  /* Sección de inputs/labels (columna izquierda) */
+  .sampling-input-left {
+    width: 100%;
+  }
+  
+  .sampling-input-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dos columnas para los inputs */
+    gap: 25px;
+    width: 100%;
+  }
+  
+  .sampling-input-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sampling-input-group label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    width: 100%;
+  }
+  
+  .sampling-input-group span {
+    padding: 6px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+    display: inline-block;
+    background-color: #f3f3f3;
+  }
+  
+  /* Sección de imagen (columna derecha) */
+  .sampling-image-section {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    padding: 10px;
+    max-width: 100%;
+  }
+  
+  .sampling-image-section img {
+    max-width: 250px; /* Limita el tamaño de la imagen */
+    height: auto;
+  }
+  
+  /* Sección de pesos */
+  .sampling-peso-section {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center; /* Centra la sección horizontalmente */
+    align-items: center; /* Centra la sección verticalmente */
+    width: 100%;
+  }
+  
+  /* Contenedor de los campos de peso */
+  .sampling-peso-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Tres columnas para los campos de peso */
+    gap: 25px; /* Espacio entre los campos */
+    width: 100%; /* Ancho del contenedor */
+    justify-items: center; /* Centra los items dentro del contenedor */
+  }
+  
+  /* Estilo de los campos de peso */
+  .sampling-peso-container .sampling-input-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Asegura que los elementos estén centrados dentro del grupo */
+    align-items: center; /* Centra los labels y spans dentro de cada grupo */
+  }
+  
+  /* Nueva clase para los contenedores de label y span */
+  .sampling-peso-container .sampling-label-span-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra los label y span */
+    width: 100%;
+  }
+  
+  /* Estilo de los labels dentro de la sección de peso */
+  .sampling-peso-container .sampling-label-span-container label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    text-align: center; /* Centra el label */
+  }
+  
+  /* Estilo de los spans dentro de la sección de peso */
+  .sampling-peso-container .sampling-label-span-container span {
+    padding: 6px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+    display: inline-block;
+    text-align: center; /* Centra el contenido del span */
+  }
+  
+  /* Ajuste de los inputs dentro de la sección de peso */
+  .sampling-peso-container .sampling-input-group input {
+    padding: 6px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  /* Ajuste específico para span e input dentro de la sección de peso */
+  .sampling-peso-container .sampling-input-group span,
+  .sampling-peso-container .sampling-input-group input {
+    padding: 10px; /* Aumenta el padding para darle más altura */
+    font-size: 40px; /* Tamaño de fuente grande */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 250px; /* Ancho fijo para spans y inputs */
+    height: auto; /* Asegura que se ajuste la altura automáticamente según el contenido */
+    line-height: 1.5; /* Ajusta la altura de la línea para mayor separación */
+  }
+  
+  /* Botón */
+  .sampling-button-section {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 40px;
+    min-height: 70px;
+  }
+  
+  .sampling-button-section button {
+    width: 250px;
+    padding: 10px;
+    font-size: 20px;
+    border-radius: 5px;
+    margin: 0 10px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    border: none;
+  }
+  
+  .sampling-btn-actualizar {
+    background-color: #1e3247;
+  }
+  
+  button:hover {
+    opacity: 0.9;
+  }
+  
+  /* MODO OSCURO */
+  
+  body.dark-mode {
+    background-color: #1a1a1a; /* Fondo oscuro */
+    color: #e0e0e0; /* Texto claro */
+  }
+  
+  body.dark-mode .sampling-main-container {
+    background-color: #1a1a1a; /* Fondo oscuro */
+  }
+
+  body.dark-mode .sampling-group input{
+    color: #e0e0e0; /* Texto claro */
+    background-color: #333; /* Fondo oscuro */
+    border: 1px solid #555; /* Borde oscuro */
+  }
+  
+  body.dark-mode .sampling-input-group span,
+  body.dark-mode .sampling-input-group input {
+    color: #e0e0e0; /* Texto claro */
+    background-color: #333; /* Fondo oscuro */
+    border: 1px solid #555; /* Borde oscuro */
+  }
+  
+  body.dark-mode .sampling-peso-container .sampling-label-span-container span,
+  body.dark-mode .sampling-peso-container .sampling-label-span-container input {
+    color: #e0e0e0; /* Texto claro */
+    background-color: #333; /* Fondo oscuro */
+    border: 1px solid #555; /* Borde oscuro */
+  }
+  
+  body.dark-mode .sampling-button-section button {
+    background-color: #1e3247; /* Color del botón en modo oscuro */
+    color: #e0e0e0; /* Texto claro */
+  }
+  
+  /* Media Queries para Responsividad */
+  
+  @media (max-width: 1024px) {
+    .sampling-form-section.input-image-container {
+      grid-template-columns: 1fr; /* Una columna en pantallas medianas */
+    }
+  
+    .sampling-peso-container {
+      grid-template-columns: repeat(2, 1fr); /* Dos columnas para los campos de peso */
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .sampling-input-container {
+      grid-template-columns: 1fr; /* Una columna para los inputs */
+    }
+  
+    .sampling-peso-container {
+      grid-template-columns: 1fr; /* Una columna para los campos de peso */
+    }
+  
+    .sampling-button-section {
+      flex-direction: column; /* Botones en columna */
+      align-items: center;
+    }
+  
+    .sampling-button-section button {
+      margin: 10px 0; /* Espacio entre botones */
+    }
+  }
+  
+  /* Estilos para alertas (comunes en ambos modos) */
+  .warning-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .warning-box {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 300px;
+  }
+  
+  .warning-box p {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .warning-box button {
+    background-color: #d38900;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .warning-box button:hover {
+    background-color: #d38900;
+  }
+  
+  .success-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #4caf50;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    animation: slideIn 0.5s ease-out;
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
