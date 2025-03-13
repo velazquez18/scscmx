@@ -8,9 +8,12 @@ function QRInput({ onQRSubmit }) {
     if (e.key === "Enter") {
       e.preventDefault();
 
-      const qrParts = qr.split("|");
+      // Eliminar la fecha del QR (todo lo que viene después del último "|")
+      const qrWithoutDate = qr.split("|").slice(0, 6).join("|");
 
-      if (!qr.includes("|")) {
+      const qrParts = qrWithoutDate.split("|");
+
+      if (!qrWithoutDate.includes("|")) {
         setErrorMessage("El código QR debe contener '|' como separador.");
         setQr("");
         return;
@@ -25,7 +28,7 @@ function QRInput({ onQRSubmit }) {
       }
 
       setErrorMessage("");
-      onQRSubmit(qr);
+      onQRSubmit(qrWithoutDate); // Enviar el QR sin la fecha
       setQr("");
     }
   };
