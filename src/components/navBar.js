@@ -3,6 +3,8 @@ import "../styles/navbar.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 const NavBar = ({ onLogout, toggleDarkMode, darkMode }) => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Estado para el menú hamburguesa
@@ -10,6 +12,8 @@ const NavBar = ({ onLogout, toggleDarkMode, darkMode }) => {
   const dropdownRef = useRef(null);
   const menuRef = useRef(null); // Referencia para el menú hamburguesa
   const navigate = useNavigate();
+
+ 
 
   // Función para manejar el clic en el icono del usuario
   const toggleDropdown = () => {
@@ -35,7 +39,7 @@ const NavBar = ({ onLogout, toggleDarkMode, darkMode }) => {
       if (rfid) {
         try {
           const response = await axios.post(
-            "http://localhost:3001/api/getUserData",
+            `${backendUrl}/api/getUserData`,
             { rfid }
           );
 

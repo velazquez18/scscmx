@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
+
 function WeightDisplay({ pesoTara, pesoBruto, setPesoBruto, PxP, setPiezasEmpaque }) {
   const [pesoNeto, setPesoNeto] = useState("00.0000");
 
@@ -9,7 +12,7 @@ function WeightDisplay({ pesoTara, pesoBruto, setPesoBruto, PxP, setPiezasEmpaqu
   };
   
   useEffect(() => {
-    const socket = io("http://localhost:3001");
+    const socket = io(backendUrl); 
   
     socket.on("connect", () => {
       console.log("Conectado al servidor de Socket.IO");

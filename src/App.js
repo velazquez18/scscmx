@@ -19,8 +19,12 @@ const App = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [weightData, setWeightData] = useState({ pesoBruto: "0.000" });
 
+  // Usar la variable de entorno para la URL del backend
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
   useEffect(() => {
-    const socket = io("http://localhost:3001");
+    // Conectar Socket.IO al backend desplegado
+    const socket = io(backendUrl);
 
     socket.on("serialData", (data) => {
       console.log("Datos recibidos en App.js:", data);
@@ -30,7 +34,7 @@ const App = () => {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [backendUrl]); // Dependencia de backendUrl
 
   useEffect(() => {
     const rfid = localStorage.getItem("rfid");

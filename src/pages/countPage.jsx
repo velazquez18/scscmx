@@ -5,7 +5,11 @@ import { io } from "socket.io-client";
 import "../styles/count.css";
 import WarningMessage from "../components/WarningMessage.jsx";
 
-const socket = io("http://localhost:3001");
+// Usar la variable de entorno para la URL del backend
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
+// Conectar Socket.IO al backend desplegado
+const socket = io(backendUrl);
 
 function CountPage() {
   const [qr, setQr] = useState("");
@@ -44,7 +48,7 @@ function CountPage() {
     console.log(`Buscando datos con QR: ${qr}`);
     try {
       const response = await fetch(
-        `http://localhost:3001/api/getDataByQr?qr=${qr}`
+        `${backendUrl}/api/getDataByQr?qr=${qr}`
       );
 
       if (response.ok) {
@@ -219,7 +223,7 @@ function CountPage() {
 
     try {
       const response = await fetch(
-        "http://localhost:3001/api/registrarInventario",
+        `${backendUrl}/api/registrarInventario`,
         {
           method: "POST",
           headers: {

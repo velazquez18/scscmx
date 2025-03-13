@@ -26,6 +26,7 @@ function QRInput({ onQRSubmit }) {
 
       setErrorMessage("");
       onQRSubmit(qr);
+      setQr("");
     }
   };
 

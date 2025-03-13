@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import "../styles/login.css";
 import logo from "../assets/images/SIAUMex_.PNG";
 
+// Usar la variable de entorno para la URL del backend
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 function LoginPage({ onLogin }) {
   const [status, setStatus] = useState("Esperando escaneo...");
   const [rfidValue, setRfidValue] = useState("");
@@ -10,7 +13,7 @@ function LoginPage({ onLogin }) {
 
   const authenticateWithRFID = async (rfid) => {
     try {
-      const response = await fetch("http://localhost:3001/api/login", {
+      const response = await fetch(`${backendUrl}/api/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

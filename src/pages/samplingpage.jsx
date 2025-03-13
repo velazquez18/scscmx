@@ -3,6 +3,9 @@ import "../styles/sampling.css";
 import { io } from "socket.io-client";
 import WarningMessage from "../components/WarningMessage.jsx";
 
+// Usar la variable de entorno para la URL del backend
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 function SamplingPage() {
   const [id, setId] = useState("");
   const [IdProd, setIdProd] = useState("");
@@ -21,7 +24,7 @@ function SamplingPage() {
 
   // Conectar el servidor al socket
   useEffect(() => {
-    const socket = io("http://localhost:3001");
+    const socket = io(backendUrl);
 
     // Escuchar el evento weightData
     socket.on("weightData", (data) => {
@@ -95,7 +98,7 @@ function SamplingPage() {
     }
 
     try {
-      const response = await fetch("http://localhost:3001/api/updateData", {
+      const response = await fetch(`${backendUrl}/api/updateData`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -159,7 +162,7 @@ function SamplingPage() {
       setErrorMessage("");
       try {
         const response = await fetch(
-          `http://localhost:3001/api/getDataById?id=${id}`
+          `${backendUrl}/api/getDataById?id=${id}`
         );
 
         if (response.ok) {

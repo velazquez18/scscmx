@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "../styles/op.css";
 
+// Usar la variable de entorno para la URL del backend
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
 const OpPage = () => {
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,7 +13,7 @@ const OpPage = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3001/api/getOrdenProduccion"
+          `${backendUrl}/api/getOrdenProduccion`
         );
         if (!response.ok) {
           throw new Error("Error al obtener los datos");
