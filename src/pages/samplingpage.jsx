@@ -152,23 +152,17 @@ function SamplingPage() {
         setShowWarning(true); // Mostrar la advertencia
         return;
       }
-      const alphanumericRegex = /^[a-zA-Z0-9]+$/;
-      if (!alphanumericRegex.test(id)) {
-        setErrorMessage("El Id solo puede contener letras y números.");
-        setId("");
-        setShowWarning(true); // Mostrar la advertencia
-        return;
-      }
+      // Eliminamos la validación de caracteres especiales
       setErrorMessage("");
       try {
         const response = await fetch(
           `${backendUrl}/api/getDataById?id=${id}`
         );
-
+  
         if (response.ok) {
           const data = await response.json();
           console.log(data);
-
+  
           setIdProd(data.IdProd);
           setProducto(data.nombreProducto);
           setPxp(data.PxP);
@@ -176,7 +170,7 @@ function SamplingPage() {
           setVariable2(data.Var2);
           setVariable3(data.Var3);
           setImagen(data.Imagen);
-
+  
           // Limpiar el campo de Id después de procesarlo
           setId("");
         } else {
