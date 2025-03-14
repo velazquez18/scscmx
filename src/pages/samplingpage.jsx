@@ -155,14 +155,12 @@ function SamplingPage() {
       // Eliminamos la validación de caracteres especiales
       setErrorMessage("");
       try {
-        const response = await fetch(
-          `${backendUrl}/api/getDataById?id=${id}`
-        );
-  
+        const response = await fetch(`${backendUrl}/api/getDataById?id=${id}`);
+
         if (response.ok) {
           const data = await response.json();
           console.log(data);
-  
+
           setIdProd(data.IdProd);
           setProducto(data.nombreProducto);
           setPxp(data.PxP);
@@ -170,7 +168,7 @@ function SamplingPage() {
           setVariable2(data.Var2);
           setVariable3(data.Var3);
           setImagen(data.Imagen);
-  
+
           // Limpiar el campo de Id después de procesarlo
           setId("");
         } else {
@@ -251,13 +249,16 @@ function SamplingPage() {
           <div className="image-section count-image-section">
             {Imagen ? (
               <img
-                src={Imagen}
-                alt="Imagen del producto"
+                src={Imagen} // Usamos la URL de la imagen recibida del backend
+                alt="Imagen del cliente"
                 className="client-image"
+                onError={(e) => {
+                  e.target.src = require("../assets/images/producto.png"); // Imagen predeterminada si falla la carga
+                }}
               />
             ) : (
               <img
-                src={require("../assets/images/producto.png")}
+                src={require("../assets/images/producto.png")} // Imagen predeterminada
                 alt="Imagen predeterminada"
                 className="default-image"
               />

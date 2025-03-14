@@ -47,9 +47,7 @@ function CountPage() {
   const handleQRSubmit = async (qr) => {
     console.log(`Buscando datos con QR: ${qr}`);
     try {
-      const response = await fetch(
-        `${backendUrl}/api/getDataByQr?qr=${qr}`
-      );
+      const response = await fetch(`${backendUrl}/api/getDataByQr?qr=${qr}`);
 
       if (response.ok) {
         const data = await response.json();
@@ -196,7 +194,9 @@ function CountPage() {
         Lote,
         pesoBruto,
       });
-      setErrorMessage("Faltan campos requeridos. Asegúrate de escanear el QR correctamente.");
+      setErrorMessage(
+        "Faltan campos requeridos. Asegúrate de escanear el QR correctamente."
+      );
       setShowWarning(true);
       return;
     }
@@ -222,16 +222,13 @@ function CountPage() {
     console.log("Datos a enviar al backend:", registroData); // Depuración
 
     try {
-      const response = await fetch(
-        `${backendUrl}/api/registrarInventario`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(registroData),
-        }
-      );
+      const response = await fetch(`${backendUrl}/api/registrarInventario`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(registroData),
+      });
 
       if (response.ok) {
         console.log("Registro exitoso.");
@@ -320,13 +317,16 @@ function CountPage() {
           <div className="image-section count-image-section">
             {Imagen ? (
               <img
-                src={Imagen} // Usamos la imagen en base64 recibida del backend
+                src={Imagen} // Usamos la URL de la imagen recibida del backend
                 alt="Imagen del cliente"
                 className="client-image"
+                onError={(e) => {
+                  e.target.src = require("../assets/images/producto.png"); // Imagen predeterminada si falla la carga
+                }}
               />
             ) : (
               <img
-                src={require("../assets/images/producto.png")} // Imagen predeterminada en caso de que no se reciba ninguna
+                src={require("../assets/images/producto.png")} // Imagen predeterminada
                 alt="Imagen predeterminada"
                 className="default-image"
               />
