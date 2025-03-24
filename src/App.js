@@ -5,7 +5,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { io } from "socket.io-client";
+import { io } from "socket.io-client"; // Importar io desde socket.io-client
 import LoginPage from "./pages/loginPage";
 import CountPage from "./pages/countPage";
 import NavBar from "./components/navBar";
@@ -18,46 +18,47 @@ const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [weightData, setWeightData] = useState({ pesoBruto: "0.000" });
-  const [localWeight, setLocalWeight] = useState("0.000"); // Nuevo estado para el peso local
 
-  // Usar la variable de entorno para la URL
+  // URL del backend (Render)
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
-  // Conectar a la aplicación local para obtener el peso
+  // URL de LocalTunnel para el servidor WebSocket
+  const localTunnelUrl = "https://tidy-pigs-mix.loca.lt";
+
+  // Conectar al servidor WebSocket (usando LocalTunnel)
   useEffect(() => {
-    const fetchLocalWeight = async () => {
-      try {
-        const response = await fetch('https://8c7d-38-65-174-226.ngrok-free.app'); 
-        if (!response.ok) {
-          throw new Error('Error al obtener el peso local');
-        }
-        const data = await response.json();
-        setLocalWeight(data.peso || "00.0000"); // Actualiza el estado con el peso local
-      } catch (err) {
-        console.error('Error al obtener el peso local:', err.message);
-      }
-    };
+    const socket = io(localTunnelUrl); // Conectar al servidor WebSocket usando la URL de LocalTunnel
 
-    // Llamar a la API local cada segundo
-    const interval = setInterval(fetchLocalWeight, 1000);
-
-    // Limpiar el intervalo al desmontar el componente
-    return () => clearInterval(interval);
-  }, []);
-
-  // Conectar Socket.IO al backend desplegado
-  useEffect(() => {
-    const socket = io(backendUrl);
-
-    socket.on("serialData", (data) => {
-      console.log("Datos recibidos en App.js:", data);
-      setWeightData({ pesoBruto: data.pesoBruto || "0.000" });
+    // Escuchar el evento 'peso' para recibir el peso en tiempo real
+    socket.on('peso', (data) => {
+      console.log('Peso recibido:', data.peso);
+      setWeightData({ pesoBruto: data.peso || "0.000" }); // Actualizar el estado con el nuevo peso
     });
 
+    // Manejar errores de conexión
+    socket.on('connect_error', (error) => {
+      console.error('Error en la conexión WebSocket:', error);
+    });
+
+    // Cerrar la conexión al desmontar el componente
     return () => {
       socket.disconnect();
     };
-  }, [backendUrl]);
+  }, []); // Dependencia vacía para que solo se ejecute una vez
+
+  // Ejemplo de cómo usar el backend para otras solicitudes HTTP
+  const fetchDataFromBackend = async () => {
+    try {
+      const response = await fetch(`${backendUrl}/api/data`);
+      if (!response.ok) {
+        throw new Error('Error al obtener los datos del backend');
+      }
+      const data = await response.json();
+      console.log('Datos del backend:', data);
+    } catch (err) {
+      console.error('Error:', err.message);
+    }
+  };
 
   useEffect(() => {
     const rfid = localStorage.getItem("rfid");
@@ -104,7 +105,7 @@ const App = () => {
           path="/conteo"
           element={
             isAuthenticated ? (
-              <CountPage weight={{ ...weightData, localWeight }} /> // Pasar el peso local
+              <CountPage weight={weightData} /> // Pasar el peso recibido por WebSocket
             ) : (
               <Navigate to="/" />
             )
@@ -124,7 +125,7 @@ const App = () => {
           path="/muestreo"
           element={
             isAuthenticated ? (
-              <SamplingPage weight={{ ...weightData, localWeight }} /> // Pasar el peso local
+              <SamplingPage weight={weightData} /> // Pasar el peso recibido por WebSocket
             ) : (
               <Navigate to="/" />
             )
