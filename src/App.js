@@ -27,7 +27,7 @@ const App = () => {
   useEffect(() => {
     const fetchLocalWeight = async () => {
       try {
-        const response = await fetch('http://localhost:3002/peso'); // Cambia a 3002
+        const response = await fetch('http://localhost:3002'); // Cambia a 3002
         if (!response.ok) {
           throw new Error('Error al obtener el peso local');
         }
