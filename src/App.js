@@ -27,12 +27,12 @@ const App = () => {
   useEffect(() => {
     const fetchLocalWeight = async () => {
       try {
-        const response = await fetch('http://localhost:3002'); // Cambia a 3002
+        const response = await fetch('https://8c7d-38-65-174-226.ngrok-free.app'); 
         if (!response.ok) {
           throw new Error('Error al obtener el peso local');
         }
         const data = await response.json();
-        setLocalWeight(data.peso || "0.000"); // Actualiza el estado con el peso local
+        setLocalWeight(data.peso || "00.0000"); // Actualiza el estado con el peso local
       } catch (err) {
         console.error('Error al obtener el peso local:', err.message);
       }
