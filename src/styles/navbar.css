@@ -140,6 +140,25 @@ nav ul li a:hover {
   background-color: #f3f3f3;
 }
 
+/* MODO OSCURO */
+body.dark-mode .input-group input {
+  color: #fff;
+  background-color: #333;
+  border: 1px solid #555;
+}
+
+body.dark-mode .input-group span {
+  color: #fff;
+  background-color: #333;
+  border: 1px solid #555;
+}
+
+body.dark-mode .seccion-pesos span {
+  color: #fff;
+  background-color: #333;
+  border: 1px solid #555;
+}
+
 /* Estilos para pantallas pequeñas */
 @media (max-width: 768px) {
   .menu-toggle {

@@ -6,7 +6,7 @@ import "../styles/count.css";
 import WarningMessage from "../components/WarningMessage.jsx";
 
 // Usar la variable de entorno para la URL del backend
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
+const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
 
 // Conectar Socket.IO al backend desplegado
 const socket = io(backendUrl);

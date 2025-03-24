@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
+const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
 
 
 function WeightDisplay({ pesoTara, pesoBruto, setPesoBruto, PxP, setPiezasEmpaque }) {

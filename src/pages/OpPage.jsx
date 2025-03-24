@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../styles/op.css";
 
 // Usar la variable de entorno para la URL del backend
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
+const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
 
 const OpPage = () => {
   const [tableData, setTableData] = useState([]);
@@ -32,6 +32,11 @@ const OpPage = () => {
     fetchData();
   }, []);
 
+  const formatFecha = (fecha) => {
+    if (!fecha) return ""; // Si no hay fecha, devolver un valor vacío
+    return fecha.slice(0, -5); // Eliminar los últimos 5 caracteres (.000Z)
+  };
+
   return (
     <div className="op-main-container">
       <h1>Orden de Produccion</h1>
@@ -58,7 +63,7 @@ const OpPage = () => {
                   <td>{row.Cliente}</td>
                   <td>{row.Producto}</td>
                   <td>{row.Emp}</td>
-                  <td>{row.Fecha}</td>
+                  <td>{formatFecha(row.Fecha)}</td>
                 </tr>
               ))
             ) : (

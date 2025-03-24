@@ -18,12 +18,35 @@ const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [weightData, setWeightData] = useState({ pesoBruto: "0.000" });
+  const [localWeight, setLocalWeight] = useState("0.000"); // Nuevo estado para el peso local
 
-  // Usar la variable de entorno para la URL del backend
+  // Usar la variable de entorno para la URL
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
+  // Conectar a la aplicación local para obtener el peso
   useEffect(() => {
-    // Conectar Socket.IO al backend desplegado
+    const fetchLocalWeight = async () => {
+      try {
+        const response = await fetch('http://localhost:3002/peso'); // Cambia a 3002
+        if (!response.ok) {
+          throw new Error('Error al obtener el peso local');
+        }
+        const data = await response.json();
+        setLocalWeight(data.peso || "0.000"); // Actualiza el estado con el peso local
+      } catch (err) {
+        console.error('Error al obtener el peso local:', err.message);
+      }
+    };
+
+    // Llamar a la API local cada segundo
+    const interval = setInterval(fetchLocalWeight, 1000);
+
+    // Limpiar el intervalo al desmontar el componente
+    return () => clearInterval(interval);
+  }, []);
+
+  // Conectar Socket.IO al backend desplegado
+  useEffect(() => {
     const socket = io(backendUrl);
 
     socket.on("serialData", (data) => {
@@ -34,7 +57,7 @@ const App = () => {
     return () => {
       socket.disconnect();
     };
-  }, [backendUrl]); // Dependencia de backendUrl
+  }, [backendUrl]);
 
   useEffect(() => {
     const rfid = localStorage.getItem("rfid");
@@ -81,7 +104,7 @@ const App = () => {
           path="/conteo"
           element={
             isAuthenticated ? (
-              <CountPage weight={weightData} />
+              <CountPage weight={{ ...weightData, localWeight }} /> // Pasar el peso local
             ) : (
               <Navigate to="/" />
             )
@@ -101,7 +124,7 @@ const App = () => {
           path="/muestreo"
           element={
             isAuthenticated ? (
-              <SamplingPage weight={weightData} />
+              <SamplingPage weight={{ ...weightData, localWeight }} /> // Pasar el peso local
             ) : (
               <Navigate to="/" />
             )
