@@ -30,7 +30,7 @@ body {
 .logo img {
   max-width: 300px;
   margin-bottom: 20px;
-  width: 100%; /* Ajusta el ancho de la imagen al contenedor */
+  width: 200%; /* Ajusta el ancho de la imagen al contenedor */
   height: auto; /* Mantiene la proporción */
 }
 
