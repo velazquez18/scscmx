@@ -21,19 +21,17 @@ const App = () => {
   const [connectionStatus, setConnectionStatus] = useState("Conectando...");
 
   // URLs (usar variables de entorno en producción)
-  const backendUrl =
-    process.env.REACT_APP_BACKEND_URL || "https://tu-backend.onrender.com";
-  const websocketUrl =
-    process.env.REACT_APP_WEBSOCKET_URL || "https://scsmx-bascula.loca.lt";
+  const backendUrl = process.env.REACT_APP_BACKEND_URL || "https://tu-backend.onrender.com";
+  const websocketUrl = process.env.REACT_APP_WEBSOCKET_URL || "https://scsmx-bascula.loca.lt";
 
   // Conexión WebSocket (Báscula Local)
   useEffect(() => {
-    const socket = io(websocketUrl, {
-      transports: ["websocket"],
+    const socket = io('wss://scsmx-bascula.loca.lt', {
+      transports: ['websocket'],
       reconnection: true,
       reconnectionAttempts: Infinity,
-      reconnectionDelay: 5000,
-      timeout: 20000,
+      reconnectionDelay: 3000,
+      timeout: 20000
     });
 
     socket.on("connect", () => {

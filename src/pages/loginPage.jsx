@@ -61,7 +61,7 @@ function LoginPage({ onLogin }) {
   return (
     <div className="login-container">
       <div className="logo">
-        <img src={logo} alt="SIAUMex Logo" />
+        <img src={logo} alt="SIAUMex Logo" style={{ width: "250px", height: "auto" }} />
       </div>
       <div className="login-box">
         <h2>Escanea tu tarjeta RFID</h2>
