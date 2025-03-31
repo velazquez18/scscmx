@@ -22,14 +22,14 @@ const App = () => {
 
   // URLs (usar variables de entorno en producción)
   const backendUrl =
-    process.env.REACT_APP_BACKEND_URL || "https://tu-backend.onrender.com";
+    process.env.REACT_APP_BACKEND_URL || "https://scsmxback.onrender.com";
   const websocketUrl =
     process.env.REACT_APP_WEBSOCKET_URL || "https://scsmx-bascula.loca.lt";
 
   // Conexión WebSocket (Báscula Local)
   useEffect(() => {
     const socket = io("https://scsmx-bascula.loca.lt", {
-      transports: ["polling"], // Usa HTTP polling en lugar de WebSocket
+      transports: ["polling"], 
       reconnection: true,
       secure: true,
     });
@@ -38,9 +38,16 @@ const App = () => {
       console.log("⚡ Conectado al servidor de peso");
       setConnectionStatus("Conectado");
     });
+    socket.on("weightData", (data) => {
+      console.log('📥 Datos recibidos:', data);
+      setWeightData({
+        pesoBruto: data.Brut || "0.000",
+        pesoNeto: data.pesoNeto || "0.000"
+      });
+    });
 
     socket.on("peso", (data) => {
-      setWeightData({ pesoBruto: data.peso || "0.000" });
+      setWeightData({ pesoBruto: data.peso || "00.0000" });
     });
 
     socket.on("disconnect", () => {
