@@ -338,9 +338,9 @@ function CountPage() {
         <WeightDisplay
           pesoTara={pesoTara}
           pesoBruto={pesoBruto}
-          setPesoBruto={handlePesoBrutoChange} // Pasar la función para actualizar el peso bruto
-          PxP={PxP} // Pasar PxP como prop
-          setPiezasEmpaque={setPiezasEmpaque} // Pasar setPiezasEmpaque como prop
+          setPesoBruto={handlePesoBrutoChange} 
+          PxP={PxP} 
+          setPiezasEmpaque={setPiezasEmpaque} 
         />
 
         {/* Mensaje de cálculos */}

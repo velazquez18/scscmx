@@ -28,10 +28,11 @@ const App = () => {
 
   // Conexión WebSocket (Báscula Local)
   useEffect(() => {
-    const socket = io("https://scsmx-bascula.loca.lt", {
-      transports: ["polling"], 
+    const socket = io('https://scsmx-bascula.loca.lt', {
+      transports: ['polling', 'websocket'], 
       reconnection: true,
       secure: true,
+      rejectUnauthorized: false,
     });
 
     socket.on("connect", () => {
