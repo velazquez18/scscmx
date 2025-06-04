@@ -1,33 +1,45 @@
 import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+const socketUrl = process.env.REACT_APP_SOCKET_URL;
+const path = process.env.PATH;
 
-
-function WeightDisplay({ pesoTara, pesoBruto, setPesoBruto, PxP, setPiezasEmpaque }) {
+function WeightDisplay({
+  pesoTara,
+  pesoBruto,
+  setPesoBruto,
+  PxP,
+  setPiezasEmpaque,
+}) {
   const [pesoNeto, setPesoNeto] = useState("00.0000");
 
   const validateWeight = (weight) => {
     return !isNaN(weight) && weight >= 0 && weight <= 1000; // Validar que sea un número y esté en el rango esperado
   };
-  
+
   useEffect(() => {
-    const socket = io(backendUrl); 
-  
+    const socket = io(socketUrl, {
+      path: path,
+      transports: ["polling", "websocket"],
+      reconnection: true,
+      secure: true,
+      rejectUnauthorized: false,
+    });
+
     socket.on("connect", () => {
       console.log("Conectado al servidor de Socket.IO");
     });
-  
+
     socket.on("weightData", (data) => {
       console.log("Datos recibidos:", data);
-  
+
       if (validateWeight(data.Brut)) {
         const newPesoBruto = parseFloat(data.Brut).toFixed(3); // Convertir a número y formatear
         const newPesoNeto = parseFloat(data.pesoNeto).toFixed(3); // Convertir a número y formatear
-  
+
         setPesoBruto(newPesoBruto); // Actualizar pesoBruto en CountPage
         setPesoNeto(newPesoNeto); // Actualizar pesoNeto localmente
-  
+
         // Calcular piezas de empaque si PxP está definido
         if (PxP > 0) {
           const piezas = Math.floor(parseFloat(newPesoNeto) / parseFloat(PxP));
@@ -37,11 +49,11 @@ function WeightDisplay({ pesoTara, pesoBruto, setPesoBruto, PxP, setPiezasEmpaqu
         console.warn("Dato de peso inválido recibido:", data.Brut);
       }
     });
-  
+
     socket.on("disconnect", () => {
       console.log("Desconectado del servidor de Socket.IO");
     });
-  
+
     return () => {
       socket.disconnect();
     };

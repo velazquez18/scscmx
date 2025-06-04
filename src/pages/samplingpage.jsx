@@ -4,7 +4,9 @@ import { io } from "socket.io-client";
 import WarningMessage from "../components/WarningMessage.jsx";
 
 // Usar la variable de entorno para la URL del backend
-const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+const socketUrl = process.env.REACT_APP_SOCKET_URL;
+const path = process.env.PATH;
 
 function SamplingPage() {
   const [id, setId] = useState("");
@@ -24,7 +26,13 @@ function SamplingPage() {
 
   // Conectar el servidor al socket
   useEffect(() => {
-    const socket = io(backendUrl);
+    const socket = io(socketUrl, {
+      path: path,
+      transports: ["polling", "websocket"],
+      reconnection: true,
+      secure: true,
+      rejectUnauthorized: false,
+    });
 
     // Escuchar el evento weightData
     socket.on("weightData", (data) => {

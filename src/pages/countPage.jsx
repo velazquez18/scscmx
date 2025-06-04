@@ -6,10 +6,18 @@ import "../styles/count.css";
 import WarningMessage from "../components/WarningMessage.jsx";
 
 // Usar la variable de entorno para la URL del backend
-const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+const socketUrl = process.env.REACT_APP_SOCKET_URL;
+const path = process.env.PATH;
 
 // Conectar Socket.IO al backend desplegado
-const socket = io(backendUrl);
+const socket = io(socketUrl, {
+  path: path,
+  transports: ["polling", "websocket"],
+  reconnection: true,
+  secure: true,
+  rejectUnauthorized: false,
+});
 
 function CountPage() {
   const [qr, setQr] = useState("");
@@ -38,6 +46,7 @@ function CountPage() {
   const [IdClie, setIdClie] = useState(""); // Estado para IdClie
   const [IdEst, setIdEst] = useState(""); // Ejemplo: Estación 1
   const [IdUsu, setIdUsu] = useState(""); // Ejemplo: Usuario 1
+  const [idPesa, setIdPesa] = useState("");
 
   // Función para actualizar el peso bruto
   const handlePesoBrutoChange = (nuevoPesoBruto) => {
@@ -112,6 +121,12 @@ function CountPage() {
     setPesoTara(newPesoTara);
     socket.emit("tareWeight", { pesoTara: newPesoTara });
     console.log(`Peso Tara set: ${newPesoTara}`);
+  };
+
+  // suscripción
+  const handleId = () => {
+    socket.emit("joinPesa", idPesa);
+    console.log(idPesa);
   };
 
   //barra de mensajes
@@ -334,13 +349,28 @@ function CountPage() {
           </div>
         </div>
 
+        <div className="input-group count-id-input-group">
+          <label htmlFor="id-pesa">Nombre de pesa:</label>
+          <div className="count-id-pesa-section">
+            <input
+              type="text"
+              id="id-pesa"
+              value={idPesa}
+              onChange={(e) => setIdPesa(e.target.value)}
+            />
+            <button type="button" onClick={handleId}>
+              Establecer nombre
+            </button>
+          </div>
+        </div>
+
         {/* Sección de peso */}
         <WeightDisplay
           pesoTara={pesoTara}
           pesoBruto={pesoBruto}
-          setPesoBruto={handlePesoBrutoChange} 
-          PxP={PxP} 
-          setPiezasEmpaque={setPiezasEmpaque} 
+          setPesoBruto={handlePesoBrutoChange}
+          PxP={PxP}
+          setPiezasEmpaque={setPiezasEmpaque}
         />
 
         {/* Mensaje de cálculos */}

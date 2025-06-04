@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../styles/op.css";
 
 // Usar la variable de entorno para la URL del backend
-const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const OpPage = () => {
   const [tableData, setTableData] = useState([]);
