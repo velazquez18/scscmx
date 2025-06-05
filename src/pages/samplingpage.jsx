@@ -6,9 +6,9 @@ import WarningMessage from "../components/WarningMessage.jsx";
 // Usar la variable de entorno para la URL del backend
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 const socketUrl = process.env.REACT_APP_SOCKET_URL;
-const path = process.env.PATH;
+const path = process.env.REACT_APP_PATH;
 
-function SamplingPage() {
+function SamplingPage({idPesa}) {
   const [id, setId] = useState("");
   const [IdProd, setIdProd] = useState("");
   const [nombreProducto, setProducto] = useState("");
@@ -24,6 +24,10 @@ function SamplingPage() {
   const [showWarning, setShowWarning] = useState(false);
   const [updateSuccess, setUpdateSuccess] = useState(false);
 
+  const validateWeight = (w) => {
+    return !isNaN(w) && w >= 0 && w <= 1000; // Validar que sea un número y esté en el rango esperado
+  };
+
   // Conectar el servidor al socket
   useEffect(() => {
     const socket = io(socketUrl, {
@@ -34,27 +38,27 @@ function SamplingPage() {
       rejectUnauthorized: false,
     });
 
-    // Escuchar el evento weightData
+    socket.on("connect", () => {
+      socket.emit('joinPesa', idPesa)
+    });
+
     socket.on("weightData", (data) => {
-      console.log("Datos recibidos en sampling:", data);
-      if (data.pesoNeto) {
-        console.log("Actualizando pesoNeto:", data.pesoNeto);
-        setPesoNeto(data.pesoNeto);
+      if (validateWeight(data.Brut)) {
+        const newPesoNeto = parseFloat(data.pesoNeto).toFixed(3); // Convertir a número y formatear
+
+        setPesoNeto(newPesoNeto); // Actualizar pesoNeto localmente
       } else {
-        console.error("Datos de pesoNeto no recibidos correctamente");
+        console.warn("Dato de peso inválido recibido:", data.Brut);
       }
     });
 
-    // Manejar la desconexión
     socket.on("disconnect", () => {
-      console.log("Desconectado del servidor socket");
     });
 
-    // Limpiar la conexión al desmontar el componente
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [idPesa, PxP]);
 
   // Manejar cambios en el input de piezas
   const handlePiezasChange = (e) => {
@@ -106,7 +110,7 @@ function SamplingPage() {
     }
 
     try {
-      const response = await fetch(`${backendUrl}/api/updateData`, {
+      const response = await fetch(`${backendUrl}/updateData`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -163,7 +167,7 @@ function SamplingPage() {
       // Eliminamos la validación de caracteres especiales
       setErrorMessage("");
       try {
-        const response = await fetch(`${backendUrl}/api/getDataById?id=${id}`);
+        const response = await fetch(`${backendUrl}/getDataById?id=${id}`);
 
         if (response.ok) {
           const data = await response.json();

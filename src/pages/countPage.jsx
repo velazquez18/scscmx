@@ -4,11 +4,12 @@ import WeightDisplay from "../components/WeightDisplay.jsx";
 import { io } from "socket.io-client";
 import "../styles/count.css";
 import WarningMessage from "../components/WarningMessage.jsx";
+import { useRef } from "react";
 
 // Usar la variable de entorno para la URL del backend
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
 const socketUrl = process.env.REACT_APP_SOCKET_URL;
-const path = process.env.PATH;
+const path = process.env.REACT_APP_PATH;
 
 // Conectar Socket.IO al backend desplegado
 const socket = io(socketUrl, {
@@ -19,7 +20,14 @@ const socket = io(socketUrl, {
   rejectUnauthorized: false,
 });
 
-function CountPage() {
+function CountPage({
+  idPesa,
+  setIdPesa,
+  weight,
+  setWeightData,
+  setPesoTara,
+  pesoTara,
+}) {
   //const [qr, setQr] = useState("");
   const [IdProd, setIdProd] = useState("");
   const [Pzas, setPiezas] = useState("");
@@ -32,21 +40,27 @@ function CountPage() {
   const [Var2, setVariable2] = useState("");
   const [Var3, setVariable3] = useState("");
   const [pesoBruto, setPesoBruto] = useState("00.0000"); // Estado para el peso bruto
-  const [pesoTara, setPesoTara] = useState("00.0000");
+  //const [pesoTara, setPesoTara] = useState("00.0000");
   //const [pesoNeto, setPesoNeto] = useState("00.0000");
   const [piezasEmpaque, setPiezasEmpaque] = useState("00.0000");
   const [Imagen, setImagen] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [showWarning, setShowWarning] = useState(false);
   const [updateSuccess, setUpdateSuccess] = useState(false);
-  const [qrScanned, setQrScanned] = useState(false);
+  //const [qrScanned, setQrScanned] = useState(false);
   const [calculationMessage, setCalculationMessage] = useState("..."); // Mensaje de cálculo
   const [messageColor, setMessageColor] = useState("gray"); // Color de la barra
   const [OP, setOP] = useState(""); // Estado para OP
   const [IdClie, setIdClie] = useState(""); // Estado para IdClie
   const [IdEst, setIdEst] = useState(""); // Ejemplo: Estación 1
   const [IdUsu, setIdUsu] = useState(""); // Ejemplo: Usuario 1
-  const [idPesa, setIdPesa] = useState("");
+  const inputRef = useRef(null);
+
+  const handleSetIdPesa = () => {
+    const valor = inputRef.current.value;
+    setIdPesa(valor);
+    console.log(idPesa);
+  };
 
   // Función para actualizar el peso bruto
   const handlePesoBrutoChange = (nuevoPesoBruto) => {
@@ -56,7 +70,7 @@ function CountPage() {
   const handleQRSubmit = async (qr) => {
     console.log(`Buscando datos con QR: ${qr}`);
     try {
-      const response = await fetch(`${backendUrl}/api/getDataByQr?qr=${qr}`);
+      const response = await fetch(`${backendUrl}/getDataByQr?qr=${qr}`);
 
       if (response.ok) {
         const data = await response.json();
@@ -66,7 +80,7 @@ function CountPage() {
           setErrorMessage(
             "El código QR es válido, pero no se encontró en la base de datos."
           );
-          setQr("");
+          //setQr("");
           return;
         }
 
@@ -82,7 +96,7 @@ function CountPage() {
         setVariable2(data.Var2 || "");
         setVariable3(data.Var3 || "");
         setImagen(data.Imagen || "");
-        setQrScanned(true);
+        //setQrScanned(true);
 
         // Asignar los valores del QR a los estados adicionales
         setOP(data.OP || "");
@@ -123,37 +137,6 @@ function CountPage() {
     console.log(`Peso Tara set: ${newPesoTara}`);
   };
 
-  // suscripción
-  const handleId = () => {
-    socket.emit("joinPesa", idPesa);
-    console.log(idPesa);
-  };
-
-  //barra de mensajes
-  const updateCalculationMessage = () => {
-    const piezasFormulario = parseInt(Pzas, 10);
-    const piezasCalculadas = parseInt(piezasEmpaque, 10);
-
-    if (isNaN(piezasFormulario) || isNaN(piezasCalculadas)) {
-      setCalculationMessage("Esperando datos...");
-      setMessageColor("gray");
-      return;
-    }
-
-    if (piezasCalculadas === piezasFormulario) {
-      setCalculationMessage("Piezas exactas");
-      setMessageColor("green");
-    } else if (piezasCalculadas < piezasFormulario) {
-      const piezasFaltantes = piezasFormulario - piezasCalculadas;
-      setCalculationMessage(`Faltan ${piezasFaltantes} piezas`);
-      setMessageColor("orange");
-    } else {
-      const piezasSobrantes = piezasCalculadas - piezasFormulario;
-      setCalculationMessage(`Sobran ${piezasSobrantes} piezas`);
-      setMessageColor("red");
-    }
-  };
-
   //boton limpiar datos
   const handleCleanData = () => {
     setIdProd("");
@@ -167,10 +150,35 @@ function CountPage() {
     setVariable2("");
     setVariable3("");
     setPesoTara("00.0000");
+    socket.emit("tareWeight", { pesoTara: 0 });
   };
 
   useEffect(() => {
     if (Pzas && piezasEmpaque) {
+      //barra de mensajes
+      const updateCalculationMessage = () => {
+        const piezasFormulario = parseInt(Pzas, 10);
+        const piezasCalculadas = parseInt(piezasEmpaque, 10);
+
+        if (isNaN(piezasFormulario) || isNaN(piezasCalculadas)) {
+          setCalculationMessage("Esperando datos...");
+          setMessageColor("gray");
+          return;
+        }
+
+        if (piezasCalculadas === piezasFormulario) {
+          setCalculationMessage("Piezas exactas");
+          setMessageColor("green");
+        } else if (piezasCalculadas < piezasFormulario) {
+          const piezasFaltantes = piezasFormulario - piezasCalculadas;
+          setCalculationMessage(`Faltan ${piezasFaltantes} piezas`);
+          setMessageColor("orange");
+        } else {
+          const piezasSobrantes = piezasCalculadas - piezasFormulario;
+          setCalculationMessage(`Sobran ${piezasSobrantes} piezas`);
+          setMessageColor("red");
+        }
+      };
       updateCalculationMessage();
     }
   }, [Pzas, piezasEmpaque]);
@@ -237,7 +245,7 @@ function CountPage() {
     console.log("Datos a enviar al backend:", registroData); // Depuración
 
     try {
-      const response = await fetch(`${backendUrl}/api/registrarInventario`, {
+      const response = await fetch(`${backendUrl}/registrarInventario`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -355,10 +363,11 @@ function CountPage() {
             <input
               type="text"
               id="id-pesa"
-              value={idPesa}
-              onChange={(e) => setIdPesa(e.target.value)}
+              defaultValue={idPesa}
+              ref={inputRef}
+              //onChange={(e) => setIdPesa(e.target.value)}
             />
-            <button type="button" onClick={handleId}>
+            <button type="button" onClick={handleSetIdPesa}>
               Establecer nombre
             </button>
           </div>
@@ -371,6 +380,9 @@ function CountPage() {
           setPesoBruto={handlePesoBrutoChange}
           PxP={PxP}
           setPiezasEmpaque={setPiezasEmpaque}
+          idPesa={idPesa}
+          weight={weight}
+          setWeightData={setWeightData}
         />
 
         {/* Mensaje de cálculos */}

@@ -13,7 +13,7 @@ function LoginPage({ onLogin }) {
 
   const authenticateWithRFID = async (rfid) => {
     try {
-      const response = await fetch(`${backendUrl}/api/login`, {
+      const response = await fetch(`${backendUrl}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

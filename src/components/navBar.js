@@ -39,7 +39,7 @@ const NavBar = ({ onLogout, toggleDarkMode, darkMode }) => {
       if (rfid) {
         try {
           const response = await axios.post(
-            `${backendUrl}/api/getUserData`,
+            `${backendUrl}/getUserData`,
             { rfid }
           );
 

@@ -5,7 +5,6 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { io } from "socket.io-client";
 import LoginPage from "./pages/loginPage";
 import CountPage from "./pages/countPage";
 import NavBar from "./components/navBar";
@@ -18,37 +17,8 @@ const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [weightData, setWeightData] = useState({ pesoBruto: "0.000" });
-  const [connectionStatus, setConnectionStatus] = useState("Conectando...");
-
-  const socketUrl = process.env.REACT_APP_SOCKET_URL;
-  const path = process.env.PATH;
-
-  // Conexión WebSocket (Báscula Local)
-  useEffect(() => {
-    const socket = io(socketUrl, {
-      path: path,
-      transports: ["polling", "websocket"],
-      reconnection: true,
-      secure: true,
-      rejectUnauthorized: false,
-    });
-
-    socket.on("connect", () => {
-      console.log("⚡ Conectado al servidor de peso");
-      setConnectionStatus("Conectado");
-    });
-
-    socket.on("disconnect", () => {
-      setConnectionStatus("Desconectado");
-    });
-
-    socket.on("connect_error", (err) => {
-      console.error("Error en conexión:", err.message);
-      setConnectionStatus(`Error: ${err.message}`);
-    });
-
-    return () => socket.disconnect();
-  }, []);
+  const [idPesa, setIdPesa] = useState("");
+  const [pesoTara, setPesoTara] = useState("00.0000");
 
   // Autenticación y tema
   useEffect(() => {
@@ -73,7 +43,6 @@ const App = () => {
           onLogout={handleLogout}
           toggleDarkMode={toggleDarkMode}
           darkMode={darkMode}
-          connectionStatus={connectionStatus}
         />
       )}
       <Routes>
@@ -91,7 +60,14 @@ const App = () => {
           path="/conteo"
           element={
             isAuthenticated ? (
-              <CountPage weight={weightData} />
+              <CountPage
+                idPesa={idPesa}
+                setIdPesa={setIdPesa}
+                weight={weightData}
+                setWeightData={setWeightData}
+                setPesoTara={setPesoTara}
+                pesoTara={pesoTara}
+              />
             ) : (
               <Navigate to="/" />
             )
@@ -105,7 +81,7 @@ const App = () => {
           path="/muestreo"
           element={
             isAuthenticated ? (
-              <SamplingPage weight={weightData} />
+              <SamplingPage idPesa={idPesa} weight={weightData} />
             ) : (
               <Navigate to="/" />
             )

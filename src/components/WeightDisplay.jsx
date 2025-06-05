@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 
 const socketUrl = process.env.REACT_APP_SOCKET_URL;
-const path = process.env.PATH;
+const path = process.env.REACT_APP_PATH;
 
 function WeightDisplay({
   pesoTara,
@@ -10,11 +10,14 @@ function WeightDisplay({
   setPesoBruto,
   PxP,
   setPiezasEmpaque,
+  idPesa,
+  weight,
+  setWeightData
 }) {
   const [pesoNeto, setPesoNeto] = useState("00.0000");
 
-  const validateWeight = (weight) => {
-    return !isNaN(weight) && weight >= 0 && weight <= 1000; // Validar que sea un número y esté en el rango esperado
+  const validateWeight = (w) => {
+    return !isNaN(w) && w >= 0 && w <= 1000; // Validar que sea un número y esté en el rango esperado
   };
 
   useEffect(() => {
@@ -27,18 +30,17 @@ function WeightDisplay({
     });
 
     socket.on("connect", () => {
-      console.log("Conectado al servidor de Socket.IO");
+      socket.emit('joinPesa', idPesa)
     });
 
     socket.on("weightData", (data) => {
-      console.log("Datos recibidos:", data);
-
       if (validateWeight(data.Brut)) {
         const newPesoBruto = parseFloat(data.Brut).toFixed(3); // Convertir a número y formatear
         const newPesoNeto = parseFloat(data.pesoNeto).toFixed(3); // Convertir a número y formatear
 
         setPesoBruto(newPesoBruto); // Actualizar pesoBruto en CountPage
         setPesoNeto(newPesoNeto); // Actualizar pesoNeto localmente
+        setWeightData(newPesoNeto);
 
         // Calcular piezas de empaque si PxP está definido
         if (PxP > 0) {
@@ -51,13 +53,12 @@ function WeightDisplay({
     });
 
     socket.on("disconnect", () => {
-      console.log("Desconectado del servidor de Socket.IO");
     });
 
     return () => {
       socket.disconnect();
     };
-  }, [setPesoBruto, PxP, setPiezasEmpaque]); // Dependencias del useEffect
+  }, [setPesoBruto, PxP, setPiezasEmpaque, idPesa, setWeightData]); // Dependencias del useEffect
 
   return (
     <div className="form-section count-peso-section">

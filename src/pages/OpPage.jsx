@@ -13,7 +13,7 @@ const OpPage = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `${backendUrl}/api/getOrdenProduccion`
+          `${backendUrl}/getOrdenProduccion`
         );
         if (!response.ok) {
           throw new Error("Error al obtener los datos");
