@@ -12,23 +12,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install dependencies with fallback
-        shell: bash
-        run: |
-          echo "Trying npm install..."
-          if ! npm install; then
-            echo "npm install failed. Retrying with --legacy-peer-deps..."
-            npm install --legacy-peer-deps
-          fi
-
-      - name: Build app
-        run: npm run build
-      
       - name: Deploy to SmarterASP.NET
         uses: talunzhang/auto-web-deploy@v1.0.1
         with:
@@ -36,4 +19,4 @@ jobs:
           server-computer-name: ${{ secrets.SERVER_COMPUTER_NAME }}
           server-username: ${{ secrets.SERVER_USERNAME }}
           server-password: ${{ secrets.SERVER_PASSWORD }}
-          source-path: '\build\'
+          source-path: 'build'
