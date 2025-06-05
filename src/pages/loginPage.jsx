@@ -39,7 +39,10 @@ function LoginPage({ onLogin }) {
     }
   };
 
-  const handleRFIDScan = (event) => {
+
+  useEffect(() => {
+
+    const handleRFIDScan = (event) => {
     const key = event.key;
 
     if (key === "Enter") {
@@ -49,14 +52,13 @@ function LoginPage({ onLogin }) {
       setRfidValue((prevValue) => prevValue + key);
     }
   };
-
-  useEffect(() => {
+  
     document.addEventListener("keypress", handleRFIDScan);
 
     return () => {
       document.removeEventListener("keypress", handleRFIDScan);
     };
-  }, [handleRFIDScan]);
+  }, [rfidValue]);
 
   return (
     <div className="login-container">

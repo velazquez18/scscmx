@@ -20,7 +20,7 @@ const socket = io(socketUrl, {
 });
 
 function CountPage() {
-  const [qr, setQr] = useState("");
+  //const [qr, setQr] = useState("");
   const [IdProd, setIdProd] = useState("");
   const [Pzas, setPiezas] = useState("");
   const [nombreProducto, setProducto] = useState("");
@@ -33,7 +33,7 @@ function CountPage() {
   const [Var3, setVariable3] = useState("");
   const [pesoBruto, setPesoBruto] = useState("00.0000"); // Estado para el peso bruto
   const [pesoTara, setPesoTara] = useState("00.0000");
-  const [pesoNeto, setPesoNeto] = useState("00.0000");
+  //const [pesoNeto, setPesoNeto] = useState("00.0000");
   const [piezasEmpaque, setPiezasEmpaque] = useState("00.0000");
   const [Imagen, setImagen] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
