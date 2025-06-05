@@ -12,6 +12,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Deploy to SmarterASP.NET
         uses: talunzhang/auto-web-deploy@v1.0.1
         with:
