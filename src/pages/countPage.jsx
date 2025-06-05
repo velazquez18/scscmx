@@ -59,8 +59,23 @@ function CountPage({
   const handleSetIdPesa = () => {
     const valor = inputRef.current.value;
     setIdPesa(valor);
-    console.log(idPesa);
   };
+
+  useEffect(() => {
+    if (!idPesa) return;
+
+    const listener = (data) => {
+      setPesoTara(data.tara);
+    };
+
+    socket.emit("joinPesa", idPesa);
+    socket.on("getTara", listener);
+
+    return () => {
+      socket.off("getTara", listener);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idPesa]);
 
   // Función para actualizar el peso bruto
   const handlePesoBrutoChange = (nuevoPesoBruto) => {
