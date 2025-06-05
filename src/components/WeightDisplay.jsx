@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import socket from "../services/socket";
+import { io } from "socket.io-client";
+
+const socketUrl = process.env.REACT_APP_SOCKET_URL;
+const path = process.env.REACT_APP_PATH;
 
 function WeightDisplay({
   pesoTara,
@@ -18,6 +21,14 @@ function WeightDisplay({
   };
 
   useEffect(() => {
+    const socket = io(socketUrl, {
+      path: path,
+      transports: ["polling", "websocket"],
+      reconnection: true,
+      secure: true,
+      rejectUnauthorized: false,
+    });
+
     socket.on("connect", () => {
       socket.emit('joinPesa', idPesa)
     });

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "../styles/sampling.css";
+import { io } from "socket.io-client";
 import WarningMessage from "../components/WarningMessage.jsx";
-import socket from "../services/socket.js";
 
 // Usar la variable de entorno para la URL del backend
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
+const socketUrl = process.env.REACT_APP_SOCKET_URL;
+const path = process.env.REACT_APP_PATH;
 
 function SamplingPage({idPesa}) {
   const [id, setId] = useState("");
@@ -28,6 +30,13 @@ function SamplingPage({idPesa}) {
 
   // Conectar el servidor al socket
   useEffect(() => {
+    const socket = io(socketUrl, {
+      path: path,
+      transports: ["polling", "websocket"],
+      reconnection: true,
+      secure: true,
+      rejectUnauthorized: false,
+    });
 
     socket.on("connect", () => {
       socket.emit('joinPesa', idPesa)

@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/static/css/main.bf18e144.css",
-    "main.js": "/static/js/main.3d6fd622.js",
+    "main.js": "/static/js/main.1b71b8c4.js",
     "static/media/SIAUMex_.PNG": "/static/media/SIAUMex_.f1dca65567c646bd021b.PNG",
     "index.html": "/index.html",
     "main.bf18e144.css.map": "/static/css/main.bf18e144.css.map",
-    "main.3d6fd622.js.map": "/static/js/main.3d6fd622.js.map"
+    "main.1b71b8c4.js.map": "/static/js/main.1b71b8c4.js.map"
   },
   "entrypoints": [
     "static/css/main.bf18e144.css",
-    "static/js/main.3d6fd622.js"
+    "static/js/main.1b71b8c4.js"
   ]
 }
