@@ -114,7 +114,7 @@ function CountPage({
         });
 
         // Enviar PxP al backend
-        socket.emit("updatePxP", { PxP: data.PxP });
+        socket.emit("updatePxP", { idPesa, PxP: data.PxP });
       } else {
         setErrorMessage("Error al buscar los datos. Intenta nuevamente.");
       }
@@ -133,7 +133,7 @@ function CountPage({
   const handleTare = () => {
     const newPesoTara = pesoBruto;
     setPesoTara(newPesoTara);
-    socket.emit("tareWeight", { pesoTara: newPesoTara });
+    socket.emit("tareWeight", { idPesa, pesoTara: newPesoTara });
     console.log(`Peso Tara set: ${newPesoTara}`);
   };
 
@@ -150,7 +150,7 @@ function CountPage({
     setVariable2("");
     setVariable3("");
     setPesoTara("00.0000");
-    socket.emit("tareWeight", { pesoTara: 0 });
+    socket.emit("tareWeight", { idPesa, pesoTara: 0 });
   };
 
   useEffect(() => {
