@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/login.css";
 import logo from "../assets/images/SIAUMex_.PNG";
@@ -11,7 +11,7 @@ function LoginPage({ onLogin }) {
   const [rfidValue, setRfidValue] = useState("");
   const navigate = useNavigate();
 
-  const authenticateWithRFID = async (rfid) => {
+  const authenticateWithRFID = useCallback(async (rfid) => {
     try {
       const response = await fetch(`${backendUrl}/login`, {
         method: "POST",
@@ -37,8 +37,7 @@ function LoginPage({ onLogin }) {
       setStatus("Error de autenticación");
       console.error("Error de autenticación:", error);
     }
-  };
-
+  }, [navigate, onLogin]);
 
   useEffect(() => {
 
