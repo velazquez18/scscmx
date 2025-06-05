@@ -1,24 +1,14 @@
 import React, { useState, useEffect } from "react";
 import QRInput from "../components/QRInput.jsx";
 import WeightDisplay from "../components/WeightDisplay.jsx";
-import { io } from "socket.io-client";
+import socket from "../services/socket.js";
 import "../styles/count.css";
 import WarningMessage from "../components/WarningMessage.jsx";
 import { useRef } from "react";
 
 // Usar la variable de entorno para la URL del backend
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
-const socketUrl = process.env.REACT_APP_SOCKET_URL;
-const path = process.env.REACT_APP_PATH;
 
-// Conectar Socket.IO al backend desplegado
-const socket = io(socketUrl, {
-  path: path,
-  transports: ["polling", "websocket"],
-  reconnection: true,
-  secure: true,
-  rejectUnauthorized: false,
-});
 
 function CountPage({
   idPesa,
