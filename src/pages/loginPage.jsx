@@ -58,7 +58,7 @@ function LoginPage({ onLogin }) {
     return () => {
       document.removeEventListener("keypress", handleRFIDScan);
     };
-  }, [rfidValue]);
+  }, [rfidValue, authenticateWithRFID]);
 
   return (
     <div className="login-container">
